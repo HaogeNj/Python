@@ -11,7 +11,9 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36
 
 f = open('C:\Users\Administrator\PycharmProjects\charcount\poem\indexurl.txt', 'r')
 poemdata = open('C:\Users\Administrator\PycharmProjects\charcount\poem\poemdata.txt', 'w')
+errordata = open('C:\Users\Administrator\PycharmProjects\charcount\poem\erroedata.txt', 'w')
 
+x = 0
 
 try:
     while 1:
@@ -20,19 +22,28 @@ try:
         if not line:
             break
 
-        req = urllib2.Request(line, headers=headers)  # 创建对象
-        page = urllib2.urlopen(req, timeout=200)  # 设置超时
-        contents = page.read()
+        try:
+            req = urllib2.Request(line, headers=headers)  # 创建对象
+            page = urllib2.urlopen(req, timeout=200)  # 设置超时
+            contents = page.read()
 
-        soup = BeautifulSoup(contents, 'html.parser')
-        gettitle =  soup.find(id='middlediv').find('h2').text.strip()  # 标题
-        dynasty = soup.find(attrs={'class': 'jjzz'}).find_all()[0].text.strip()  # 年代
-        author = soup.find(attrs={'class': 'jjzz'}).find_all()[1].text.strip()   # 作者
-        poemcontent =  soup.find(attrs={'class': 'shicineirong'}).text.strip().replace('\n','')  # 古诗内容
+            soup = BeautifulSoup(contents, 'html.parser')
+            gettitle =  soup.find(id='middlediv').find('h2').text.strip()  # 标题
+            dynasty = soup.find(attrs={'class': 'jjzz'}).find_all()[0].text.strip()  # 年代
+            author = soup.find(attrs={'class': 'jjzz'}).find_all()[1].text.strip()   # 作者
+            poemcontent =  soup.find(attrs={'class': 'shicineirong'}).text.strip().replace('\n','')  # 古诗内容
 
-        #输出诗词标题+朝代+作者+内容
-        poemdata.write(gettitle +'|$|' + dynasty + '|$|' + author + '|$|' + poemcontent + '\n')
+            #输出诗词标题+朝代+作者+内容
+            poemdata.write(gettitle +'|$|' + dynasty + '|$|' + author + '|$|' + poemcontent + '|$|' + line + '\n')
 
+            x +=1
+
+            if x%1000 == 0:
+                print 'current get poem num:' + str(x)
+
+        except Exception, e:
+            print e
+            errordata.write(line+'\n')
 finally:
     f.close()
     poemdata.close()
