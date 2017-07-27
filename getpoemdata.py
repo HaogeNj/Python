@@ -11,7 +11,9 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36
 
 f = open('C:\Users\Administrator\PycharmProjects\charcount\poem\indexurl.txt', 'r')
 poemdata = open('C:\Users\Administrator\PycharmProjects\charcount\poem\poemdata.txt', 'w')
-errordata = open('C:\Users\Administrator\PycharmProjects\charcount\poem\erroedata.txt', 'w')
+
+#异常数据应该追加写入
+errordata = open('C:\Users\Administrator\PycharmProjects\charcount\poem\erroedata.txt', 'a')
 
 x = 0
 
